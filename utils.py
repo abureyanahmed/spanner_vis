@@ -43,3 +43,19 @@ def path_edges(path):
       edges_in_path.append((u, v))
 
   return edges_in_path
+
+def additive_error_metric(metric, error):
+  res_metric = {}
+  for u in metric:
+    res_metric[u] = {}
+    for v in metric[u]:
+      res_metric[u][v] = metric[u][v] + error
+  return res_metric
+
+def graph_weight(G):
+  wght = 0
+  for e in G.edges():
+    u, v = e
+    wght += G[u][v]['weight']
+  return wght
+
