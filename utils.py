@@ -100,3 +100,28 @@ def get_crossings(G, pos):
 
   print(f"Found {len(cross_pairs)} crossings (vectorized CPU version)")
   return crossings, cross_pairs
+
+def edge_coloring(G, cross_pairs):
+  start_time = time.time()
+  unassigned = set(list(G.edges()))
+  non_intersecting_sets = []
+  crossings = set(cross_pairs)
+
+  while unassigned:
+      layer = set()
+      for e in list(unassigned):
+          # Check if e crosses any edge already in this layer
+          if all(((e, other) not in crossings) for other in layer):
+              layer.add(e)
+      # Remove selected edges from unassigned
+      unassigned -= layer
+      non_intersecting_sets.append(layer)
+  end_time = time.time()
+  # --- Output results ---
+  print(f"Number of non-intersecting sets: {len(non_intersecting_sets)}")
+  for i, s in enumerate(non_intersecting_sets, 1):
+      print(f"Set {i}: {len(s)} edges")
+  print(f"Time taken: {end_time-start_time} seconds")
+
+  return non_intersecting_sets
+
